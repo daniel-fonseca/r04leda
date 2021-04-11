@@ -44,7 +44,52 @@ public class KLargestOrderStatisticsImpl<T extends Comparable<T>> implements KLa
 	 * @return
 	 */
 	public T orderStatistics(T[] array, int k){
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not implemented yet!");		
+		T eO = null;
+		if (k >= 1 && k <= array.length) {
+		quickSort(array, 0, array.length - 1);
+		eO = array[k - 1];
+		}
+		
+		return eO;
+	}
+	
+	private void quickSort(T[] array, int leftIndex, int rightIndex) {
+		boolean isSortable = false;
+		if (leftIndex < rightIndex && rightIndex < array.length) {
+			isSortable = true;
+		}
+		
+		if (isSortable) {
+			int pivotIndex = particiona(array, leftIndex, rightIndex);
+			quickSort(array, leftIndex, pivotIndex - 1);
+			quickSort(array, pivotIndex + 1, rightIndex);
+		}
+		
+	}
+	
+	private int particiona(T[] array, int leftIndex, int rightIndex) {
+		int range = rightIndex - leftIndex + 1;
+		int randomPivotIndex = (int) (Math.random() * range) + leftIndex;
+		T aux = array[leftIndex];
+		array[leftIndex] = array[randomPivotIndex];
+		array[randomPivotIndex] = aux;
+		
+		T pivot = array[leftIndex];
+		int i = leftIndex;
+		
+		for (int j = leftIndex + 1; j <= rightIndex; j++) {
+			if (array[j].compareTo(pivot) < 0) {
+				i++;
+				T temp = array[i];
+				array[i] = array[j];
+				array[j] = temp;
+			}
+		}
+		
+		T temp = array[i];
+		array[i] = array[leftIndex];
+		array[leftIndex] = temp;
+		
+		return i;
 	}
 }
